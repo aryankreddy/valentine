@@ -113,13 +113,6 @@ async function initGlobe() {
         .polygonSideColor(() => 'rgba(0,0,0,0.2)')
         .polygonStrokeColor(() => '#000000')
         .polygonLabel(() => '') // No labels on hover
-        .htmlElementsData(solvedMarkers)
-        .htmlElement(d => {
-            const el = document.createElement('div');
-            el.className = 'sticker-marker';
-            el.innerHTML = `<img src="${d.img}" alt="Sticker" style="width: 50px; height: 50px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); object-fit: cover;">`;
-            return el;
-        })
         .onPolygonHover(polygon => {
             container.style.cursor = polygon ? 'pointer' : 'grab';
         })
@@ -514,15 +507,6 @@ function animateLetter(target) {
 
             // Add to permanent list
             permanentlySolvedCountries.add(target.name);
-
-            // Add photo sticker
-            solvedMarkers.push({
-                lat: target.lat,
-                lng: target.lng,
-                img: target.img,
-                id: target.name
-            });
-            globe.htmlElementsData(solvedMarkers); // Update globe markers
 
             // Move to next stage
             continueToNextStage();
