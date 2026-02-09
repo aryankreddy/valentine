@@ -1,0 +1,639 @@
+/* ========================================
+   Globle Valentine - Styles
+   ======================================== */
+
+:root {
+  --bg-pink: #FFE4EC;
+  --accent-pink: #D87093;
+  --accent-deep: #C71585;
+  --text-dark: #4A4A4A;
+  --border-pink: #E8A4BE;
+  --font-pixel: 'Press Start 2P', cursive;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #FFFEF9 0%, #FFF8F0 50%, #FFFEF9 100%);
+  display: flex;
+  flex-direction: column;
+  color: var(--text-dark);
+}
+
+/* ========================================
+   Top Section - Input & History
+   ======================================== */
+.top-section {
+  padding: 16px;
+  padding-top: 86px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+  background: linear-gradient(to bottom, var(--bg-pink) 0%, transparent 100%);
+}
+
+.guess-section {
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
+.input-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+#guessInput {
+  flex: 1;
+  padding: 12px 16px;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  border: 3px solid var(--border-pink);
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  transition: border-color 0.2s;
+}
+
+#guessInput:focus {
+  border-color: var(--accent-pink);
+}
+
+#guessInput:disabled {
+  background: #f0f0f0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+#guessInput.error {
+  border-color: #ff6b6b;
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+#guessButton {
+  padding: 12px 20px;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  background: var(--accent-pink);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+#guessButton:hover {
+  background: var(--accent-deep);
+}
+
+#guessButton:active {
+  transform: scale(0.95);
+}
+
+#guessButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Autocomplete */
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 70px;
+  background: white;
+  border: 2px solid var(--border-pink);
+  border-radius: 8px;
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete-list.visible {
+  display: block;
+}
+
+.autocomplete-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.autocomplete-item:hover {
+  background: var(--bg-pink);
+}
+
+/* Stats Container */
+.stats-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+  min-height: 16px;
+}
+
+/* Closest Guess Indicator */
+.closest-guess {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--accent-deep);
+  text-align: left;
+  flex: 1;
+}
+
+/* Guess Counter */
+.guess-counter {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--accent-pink);
+  text-align: right;
+  flex: 1;
+}
+
+/* Guess History */
+.guess-history {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+}
+
+.history-item {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.history-item.correct {
+  font-weight: 700;
+}
+
+/* ========================================
+   Globe Wrapper
+   ======================================== */
+.globe-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  margin-top: -150px;
+}
+
+.globe-container {
+  width: 100%;
+  height: calc(100% + 60px);
+  position: relative;
+}
+
+/* Loading Indicator */
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 100;
+}
+
+.loading-indicator p {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--accent-pink);
+  margin-top: 16px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--bg-pink);
+  border-top: 4px solid var(--accent-pink);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-indicator.hidden {
+  display: none;
+}
+
+/* Globe labels */
+.globe-label {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text-dark);
+  padding: 4px 8px;
+  border: 2px solid var(--border-pink);
+  box-shadow: 2px 2px 0 var(--border-pink);
+}
+
+/* ========================================
+   Bottom Section - Letter Progress
+   ======================================== */
+.bottom-section {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  background: linear-gradient(to top, var(--bg-pink) 0%, transparent 100%);
+}
+
+.letter-progress {
+  text-align: center;
+  padding: 16px 24px;
+  background: white;
+  border-radius: 12px;
+  border: 3px solid var(--border-pink);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
+}
+
+.letter-slots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.letter-slot {
+  font-family: var(--font-pixel);
+  font-size: 18px;
+  width: 32px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-pink);
+  border: 2px solid var(--border-pink);
+  border-radius: 4px;
+  color: var(--border-pink);
+}
+
+.letter-slot.revealed {
+  background: #E8A4BE;
+  border-color: var(--accent-pink);
+  color: white;
+  animation: pop 0.3s ease-out;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.progress-hint {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  color: var(--accent-pink);
+}
+
+/* ========================================
+   Modal Overlay
+   ======================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 90%;
+  width: 350px;
+  transform: scale(0.9);
+  transition: transform 0.3s;
+  border: 4px solid var(--accent-pink);
+  box-shadow: 0 8px 32px rgba(255, 105, 180, 0.3);
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1);
+}
+
+/* ========================================
+   Valentine Opening Card
+   ======================================== */
+/* ========================================
+   Flying Letter Animation
+   ======================================== */
+.flying-letter {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, left, top, opacity;
+}
+
+/* Slot Pulse Animation */
+.letter-slot.revealed {
+  color: var(--accent-deep);
+  border-bottom: 3px solid var(--accent-deep);
+  font-weight: bold;
+}
+
+
+
+/* Victory Modal */
+.victory-content {
+  background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
+}
+
+.victory-content h1 {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--accent-deep);
+  margin-bottom: 16px;
+}
+
+.victory-content p {
+  font-size: 16px;
+  color: var(--text-dark);
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 480px) {
+  .letter-slot {
+    font-size: 14px;
+    width: 26px;
+    height: 30px;
+  }
+
+  .progress-hint {
+    font-size: 7px;
+  }
+
+  #guessButton {
+    padding: 12px 14px;
+    font-size: 8px;
+  }
+
+  .top-section,
+  .bottom-section {
+    padding: 12px;
+  }
+}
+
+/* ========================================
+   Cinematic Finale
+   ======================================== */
+
+/* 1. Dimming Overlay */
+#finaleOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 2s ease-in-out;
+  z-index: 8000;
+}
+
+#finaleOverlay.active {
+  opacity: 0.7;
+  pointer-events: auto;
+}
+
+/* 2. Swirling Letters Container */
+.swirl-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: 9000;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 3. The Big Question */
+.finale-question {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 9500;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.finale-question.visible {
+  opacity: 1;
+}
+
+.finale-question h1 {
+  font-family: var(--font-pixel);
+  font-size: 24px;
+  color: var(--accent-deep);
+  text-shadow: 
+    0 0 20px rgba(255, 255, 255, 0.8),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px 30px;
+  border-radius: 12px;
+  border: 3px solid var(--accent-pink);
+}
+
+/* 4. Yes Button */
+.yes-button {
+  font-family: var(--font-pixel);
+  font-size: 18px;
+  padding: 15px 40px;
+  background: #FF1493;
+  color: white;
+  border: 4px solid white;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.6);
+  transition: transform 0.2s, background 0.2s;
+  animation: pulse-heart 1s infinite;
+  pointer-events: auto;
+}
+
+.yes-button:hover {
+  background: #C71585;
+  transform: scale(1.1);
+}
+
+@keyframes pulse-heart {
+
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(255, 20, 147, 0.6);
+  }
+
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(255, 20, 147, 0.9);
+  }
+}
+
+/* 5. Heart Particles & Spinning Faces */
+.heart-particle {
+  position: fixed;
+  font-size: 24px;
+  user-select: none;
+  pointer-events: none;
+  z-index: 7000;
+}
+
+.spinning-face {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  user-select: none;
+  pointer-events: none;
+  z-index: 7000;
+  animation: spin-face 1s linear infinite;
+}
+
+@keyframes spin-face {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Globe Burst Effect */
+.burst-particle {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, #FF1493, #FF69B4);
+  border-radius: 50%;
+  box-shadow: 0 0 15px #FF1493, 0 0 30px #FF69B4;
+  pointer-events: none;
+  z-index: 9500;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 1;
+}
+
+.explosion-flash {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 1), rgba(255, 20, 147, 0.8), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9600;
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 1;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes globe-shake {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  10% {
+    transform: translate(-10px, -10px) scale(1.05);
+  }
+  20% {
+    transform: translate(10px, 5px) scale(0.95);
+  }
+  30% {
+    transform: translate(-8px, 8px) scale(1.08);
+  }
+  40% {
+    transform: translate(12px, -6px) scale(0.92);
+  }
+  50% {
+    transform: translate(-6px, 10px) scale(1.1);
+  }
+  60% {
+    transform: translate(8px, -8px) scale(0.9);
+  }
+  70% {
+    transform: translate(-10px, 4px) scale(1.05);
+  }
+  80% {
+    transform: translate(6px, -10px) scale(0.95);
+  }
+  90% {
+    transform: translate(-4px, 6px) scale(1.02);
+  }
+}

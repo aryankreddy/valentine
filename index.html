@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Globle Valentine 💕</title>
+  <meta name="description" content="A Valentine's Day Globle game">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💕</text></svg>">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- Top Section: Input + History -->
+  <header class="top-section">
+    <div class="guess-section">
+      <div class="input-wrapper">
+        <input type="text" id="guessInput" placeholder="Guess a country..." autocomplete="off">
+        <button id="guessButton">Guess</button>
+      </div>
+      <div class="autocomplete-list" id="autocompleteList"></div>
+      <div class="stats-container">
+        <div class="closest-guess" id="closestGuess"></div>
+        <div class="guess-counter" id="guessCounter">Guesses: 0</div>
+      </div>
+    </div>
+    <div class="guess-history" id="guessHistory"></div>
+  </header>
+
+  <!-- Middle: Globe -->
+  <main class="globe-wrapper">
+    <div class="globe-container" id="globeContainer">
+      <div class="loading-indicator" id="loadingIndicator">
+        <div class="spinner"></div>
+        <p>Loading Globe...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom: Letter Progress -->
+  <footer class="bottom-section">
+    <div class="letter-progress">
+      <div class="letter-slots" id="letterSlots">
+        <span class="letter-slot">_</span>
+        <span class="letter-slot">_</span>
+        <span class="letter-slot">_</span>
+        <span class="letter-slot">_</span>
+        <span class="letter-slot">_</span>
+        <span class="letter-slot">_</span>
+        <span class="letter-slot">_</span>
+        <span class="letter-slot">_</span>
+        <span class="letter-slot">_</span>
+      </div>
+      <p class="progress-hint" id="progressHint">Find the first country...</p>
+    </div>
+  </footer>
+
+
+
+  <!-- Cinematic Finale Elements -->
+  <div id="finaleOverlay"></div>
+  <div class="swirl-container" id="swirlContainer"></div>
+
+  <div class="finale-question" id="finaleQuestion">
+    <h1>Will You Be My Valentine?</h1>
+    <button class="yes-button" id="yesButton">YES!</button>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/topojson-client@3"></script>
+  <script src="https://unpkg.com/globe.gl"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
