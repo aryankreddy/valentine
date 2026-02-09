@@ -611,16 +611,11 @@ function swirlLetters() {
         clone.style.top = rect.top + 'px';
         clone.style.width = rect.width + 'px';
         clone.style.height = rect.height + 'px';
-        clone.style.fontSize = '24px';
+        clone.style.fontSize = '36px';
         clone.style.fontFamily = 'var(--font-pixel)';
-        clone.style.color = 'white';
-        clone.style.backgroundColor = '#E8A4BE';
-        clone.style.border = '2px solid var(--accent-pink)';
-        clone.style.borderRadius = '4px';
-        clone.style.display = 'flex';
-        clone.style.alignItems = 'center';
-        clone.style.justifyContent = 'center';
+        clone.style.color = 'var(--accent-pink)';
         clone.style.fontWeight = 'bold';
+        clone.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.3)';
         clone.style.zIndex = '9001';
         clone.style.transition = 'all 2s ease-in-out';
 
@@ -649,81 +644,11 @@ function startHeartExplosion() {
     // Hide question
     document.getElementById('finaleQuestion').style.display = 'none';
 
-    // Create burst effect BEFORE hiding globe
-    createGlobeBurstEffect();
-
-    // Hide Globe after burst
-    setTimeout(() => {
-        document.getElementById('globeContainer').style.transition = 'opacity 0.5s';
-        document.getElementById('globeContainer').style.opacity = '0';
-    }, 300);
-
-    // Explosion of 50 faces only
-    setTimeout(() => {
-        createFaceExplosion();
-    }, 400);
+    // Keep globe visible, create explosion effect
+    createFaceExplosion();
 }
 
-const FACE_IMG = 'assets/images/user_face.jpg';
-
-function createGlobeBurstEffect() {
-    const globeContainer = document.getElementById('globeContainer');
-    const rect = globeContainer.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    // Create flash effect
-    const flash = document.createElement('div');
-    flash.className = 'explosion-flash';
-    flash.style.left = centerX + 'px';
-    flash.style.top = centerY + 'px';
-    document.body.appendChild(flash);
-    
-    requestAnimationFrame(() => {
-        flash.style.transform = 'translate(-50%, -50%) scale(20)';
-        flash.style.opacity = '0';
-    });
-    
-    setTimeout(() => flash.remove(), 600);
-
-    // Create burst rings
-    for (let ring = 0; ring < 4; ring++) {
-        setTimeout(() => {
-            createBurstRing(centerX, centerY, ring);
-        }, ring * 80);
-    }
-
-    // Add shake effect to globe
-    globeContainer.style.animation = 'globe-shake 0.3s ease-in-out';
-}
-
-function createBurstRing(x, y, ringIndex) {
-    const numParticles = 20;
-    const radius = 100 + ringIndex * 80;
-    
-    for (let i = 0; i < numParticles; i++) {
-        const angle = (i / numParticles) * Math.PI * 2;
-        const particle = document.createElement('div');
-        particle.className = 'burst-particle';
-        particle.style.left = x + 'px';
-        particle.style.top = y + 'px';
-        
-        const targetX = x + Math.cos(angle) * radius;
-        const targetY = y + Math.sin(angle) * radius;
-        
-        document.body.appendChild(particle);
-        
-        // Animate outward
-        requestAnimationFrame(() => {
-            particle.style.left = targetX + 'px';
-            particle.style.top = targetY + 'px';
-            particle.style.opacity = '0';
-        });
-        
-        // Remove after animation
-        setTimeout(() => particle.remove(), 600);
-    }
-}
+const FACE_IMG = 'assets/Subject 2.png';
 
 function createFaceExplosion() {
     const globeContainer = document.getElementById('globeContainer');
@@ -731,7 +656,21 @@ function createFaceExplosion() {
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    // Spawn exactly 50 faces from globe center
+    // Create flash effect at explosion point
+    const flash = document.createElement('div');
+    flash.className = 'explosion-flash';
+    flash.style.left = centerX + 'px';
+    flash.style.top = centerY + 'px';
+    document.body.appendChild(flash);
+    
+    requestAnimationFrame(() => {
+        flash.style.transform = 'translate(-50%, -50%) scale(15)';
+        flash.style.opacity = '0';
+    });
+    
+    setTimeout(() => flash.remove(), 600);
+
+    // Spawn 50 faces from globe center
     for (let i = 0; i < 50; i++) {
         setTimeout(() => {
             spawnBouncingFace(true, centerX, centerY);
@@ -751,8 +690,8 @@ function spawnBouncingFace(explosive = false, startX = null, startY = null) {
     let y = startY !== null ? startY : window.innerHeight / 2;
 
     // Increased Velocity for "VIOLENT" explosion
-    let vx = (Math.random() - 0.5) * (explosive ? 80 : 20);
-    let vy = (Math.random() - 0.5) * (explosive ? 80 : 20) - (explosive ? 20 : 0); // Extra upward boost
+    let vx = (Math.random() - 0.5) * (explosive ? 100 : 20);
+    let vy = (Math.random() - 0.5) * (explosive ? 100 : 20) - (explosive ? 30 : 0); // Extra upward boost
     const gravity = 0.6;
     const bounce = -0.65;
     const floor = window.innerHeight - 50;
@@ -767,9 +706,9 @@ function spawnBouncingFace(explosive = false, startX = null, startY = null) {
     el.style.left = x + 'px';
     el.style.top = y + 'px';
 
-    // Smaller size for faces
-    const scale = 0.5 + Math.random() * 0.6;
-    const baseSize = 50;
+    // Varied sizes for faces
+    const scale = 0.4 + Math.random() * 0.8;
+    const baseSize = 60;
     el.style.width = (baseSize * scale) + 'px';
     el.style.height = (baseSize * scale) + 'px';
 

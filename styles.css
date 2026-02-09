@@ -559,9 +559,10 @@ body {
   position: fixed;
   width: 60px;
   height: 60px;
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  border-radius: 50%;
   user-select: none;
   pointer-events: none;
   z-index: 7000;
@@ -576,6 +577,107 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Zoom Face Effect */
+.zoom-face {
+  position: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 10000;
+  transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Main center face */
+.main-face {
+  left: 50%;
+  top: 50%;
+  width: 100px;
+  height: 100px;
+  transform: translate(-50%, -50%) scale(0.1);
+  opacity: 0;
+}
+
+.main-face.zoomed {
+  width: 100vw;
+  height: 100vh;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+/* Side faces */
+.side-face {
+  width: 80px;
+  height: 80px;
+  opacity: 0;
+  transform: scale(0.1);
+}
+
+.top-face {
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%) scale(0.1);
+}
+
+.top-face.zoomed {
+  width: 60vw;
+  height: 40vh;
+  transform: translateX(-50%) scale(1);
+  opacity: 0.8;
+}
+
+.bottom-face {
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%) scale(0.1);
+}
+
+.bottom-face.zoomed {
+  width: 60vw;
+  height: 40vh;
+  transform: translateX(-50%) scale(1);
+  opacity: 0.8;
+}
+
+.left-face {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scale(0.1);
+}
+
+.left-face.zoomed {
+  width: 40vw;
+  height: 60vh;
+  transform: translateY(-50%) scale(1);
+  opacity: 0.8;
+}
+
+.right-face {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) scale(0.1);
+}
+
+.right-face.zoomed {
+  width: 40vw;
+  height: 60vh;
+  transform: translateY(-50%) scale(1);
+  opacity: 0.8;
+}
+
+/* Pixel Hearts */
+.pixel-heart {
+  position: fixed;
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--accent-pink);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 1;
+  transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* Globe Burst Effect */
