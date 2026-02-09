@@ -723,19 +723,6 @@ body {
   }
 }
 
-/* Top 2: Flip */
-.dancing-head-flip {
-  animation: dance-flip 1s ease-in-out infinite;
-}
-
-@keyframes dance-flip {
-  0%, 100% {
-    transform: translate(-50%, -50%) rotateX(0deg);
-  }
-  50% {
-    transform: translate(-50%, -50%) rotateX(180deg);
-  }
-}
 
 /* Globe Burst Effect */
 .burst-particle {

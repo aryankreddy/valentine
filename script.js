@@ -683,38 +683,34 @@ function createFaceExplosion() {
 }
 
 function createDancingHeads(centerX, centerY) {
-    const radius = 500; // Distance from globe center (moved further out)
-    const headSize = 540; // 25% smaller than before (720 * 0.75)
+    const headSize = 405; // 25% smaller again (540 * 0.75)
     
-    // Create 6 heads positioned in a circle around the globe
-    // i=0,1: top (flip), i=2,3: middle (spin), i=4,5: bottom (shake)
-    for (let i = 0; i < 6; i++) {
-        const angle = (i / 6) * Math.PI * 2;
-        const x = centerX + Math.cos(angle) * radius;
-        const y = centerY + Math.sin(angle) * radius;
-        
+    // Position heads manually to ensure they're all visible
+    // Adjusted to move top heads down and keep all on screen
+    const positions = [
+        // Top 2 - moved down more to be visible
+        { x: centerX - 350, y: centerY - 280, type: 'shake' },
+        { x: centerX + 350, y: centerY - 280, type: 'shake' },
+        // Middle 2 - spinning
+        { x: centerX - 450, y: centerY, type: 'spin' },
+        { x: centerX + 450, y: centerY, type: 'spin' },
+        // Bottom 2 - shaking
+        { x: centerX - 350, y: centerY + 280, type: 'shake' },
+        { x: centerX + 350, y: centerY + 280, type: 'shake' }
+    ];
+    
+    positions.forEach((pos, i) => {
         const head = document.createElement('div');
-        
-        // Determine animation type based on position
-        let animationType;
-        if (i === 0 || i === 1) {
-            animationType = 'flip'; // Top 2
-        } else if (i === 2 || i === 3) {
-            animationType = 'spin'; // Middle 2
-        } else {
-            animationType = 'shake'; // Bottom 2
-        }
-        
-        head.className = `dancing-head dancing-head-${animationType}`;
+        head.className = `dancing-head dancing-head-${pos.type}`;
         head.style.backgroundImage = `url('${FACE_IMG}')`;
-        head.style.left = x + 'px';
-        head.style.top = y + 'px';
+        head.style.left = pos.x + 'px';
+        head.style.top = pos.y + 'px';
         head.style.width = headSize + 'px';
         head.style.height = headSize + 'px';
         head.style.animationDelay = (i * 0.15) + 's';
         
         document.body.appendChild(head);
-    }
+    });
 }
 
 function spawnBouncingFace(explosive = false, startX = null, startY = null) {
@@ -731,9 +727,9 @@ function spawnBouncingFace(explosive = false, startX = null, startY = null) {
     // Increased Velocity for "VIOLENT" explosion
     let vx = (Math.random() - 0.5) * (explosive ? 100 : 20);
     let vy = (Math.random() - 0.5) * (explosive ? 100 : 20) - (explosive ? 30 : 0); // Extra upward boost
-    const gravity = 0.6;
-    const bounce = -0.65;
-    const floor = window.innerHeight - 50;
+    const gravity = 0.5;
+    const bounce = -0.75; // Higher bounce coefficient to keep bouncing
+    const floor = window.innerHeight - 80; // More space from bottom
     
     if (!explosive) {
         x = Math.random() * window.innerWidth;
@@ -764,36 +760,33 @@ function spawnBouncingFace(explosive = false, startX = null, startY = null) {
         if (y > floor) {
             y = floor;
             vy *= bounce;
-            // Friction
-            vx *= 0.92;
             
-            // Random chance to stop bouncing
-            if (Math.abs(vy) < 1) {
-                vy = 0;
+            // Add minimum bounce velocity to keep bouncing
+            if (Math.abs(vy) < 3) {
+                vy = -5; // Give it a boost
             }
+            
+            // Less friction to keep moving
+            vx *= 0.96;
         }
 
         // Wall collision with bounce
         if (x < 0) {
             x = 0;
-            vx *= -0.8;
+            vx *= -0.85;
         } else if (x > window.innerWidth) {
             x = window.innerWidth;
-            vx *= -0.8;
+            vx *= -0.85;
+        }
+        
+        // Ceiling collision (bounce off top too)
+        if (y < 0) {
+            y = 0;
+            vy *= -0.85;
         }
 
         el.style.left = x + 'px';
         el.style.top = y + 'px';
-
-        // Remove if at rest
-        if (Math.abs(vy) < 0.2 && Math.abs(vx) < 0.2 && y >= floor - 5) {
-            if (Math.random() > 0.85) {
-                el.style.transition = 'opacity 2s';
-                el.style.opacity = '0';
-                setTimeout(() => el.remove(), 2000);
-            }
-            return;
-        }
 
         requestAnimationFrame(update);
     }
@@ -802,7 +795,7 @@ function spawnBouncingFace(explosive = false, startX = null, startY = null) {
 
 function spawnBouncingHeart(explosive = false) {
     const isFace = Math.random() > 0.6; // 40% chance for a face
-    
+
     if (isFace) {
         spawnBouncingFace(explosive);
         return;
