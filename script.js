@@ -112,10 +112,7 @@ async function initGlobe() {
         .polygonCapColor(feat => getCountryColor(feat))
         .polygonSideColor(() => 'rgba(0,0,0,0.2)')
         .polygonStrokeColor(() => '#000000')
-        .polygonLabel(({ properties }) => {
-            const name = getCountryName(properties);
-            return `<div class="globe-label">${name}</div>`;
-        })
+        .polygonLabel(() => '') // No labels on hover
         .htmlElementsData(solvedMarkers)
         .htmlElement(d => {
             const el = document.createElement('div');
@@ -323,16 +320,17 @@ function makeGuess(countryName) {
 
     // Record guess
     guessedCountries.set(match, distance);
-    
+
     // Increment total guess counter
     totalGuessCount++;
     updateGuessCounter();
 
-    // Update closest distance
+    // Update closest distance (always update if it's closer)
     if (distance < closestDistance) {
         closestDistance = distance;
-        updateClosestDisplay();
     }
+    // Always update display after each guess
+    updateClosestDisplay();
 
     // Get direction arrow
     const arrow = getDirectionArrow(
@@ -355,7 +353,10 @@ function makeGuess(countryName) {
 
     // Check if correct!
     if (match === target.name) {
-        // CORRECT GUESS!
+        // CORRECT GUESS! Make sure distance shows as 0
+        closestDistance = 0;
+        updateClosestDisplay();
+        
         setTimeout(() => {
             animateLetter(target);
             // Re-focus input for next guess
@@ -670,18 +671,56 @@ function createFaceExplosion() {
     
     setTimeout(() => flash.remove(), 600);
 
-    // Spawn 50 faces from globe center
-    for (let i = 0; i < 50; i++) {
+    // Create 6 huge dancing heads around the globe
+    createDancingHeads(centerX, centerY);
+
+    // Spawn 100 faces from globe center
+    for (let i = 0; i < 100; i++) {
         setTimeout(() => {
             spawnBouncingFace(true, centerX, centerY);
-        }, i * 20);
+        }, i * 15);
+    }
+}
+
+function createDancingHeads(centerX, centerY) {
+    const radius = 500; // Distance from globe center (moved further out)
+    const headSize = 540; // 25% smaller than before (720 * 0.75)
+    
+    // Create 6 heads positioned in a circle around the globe
+    // i=0,1: top (flip), i=2,3: middle (spin), i=4,5: bottom (shake)
+    for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2;
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
+        
+        const head = document.createElement('div');
+        
+        // Determine animation type based on position
+        let animationType;
+        if (i === 0 || i === 1) {
+            animationType = 'flip'; // Top 2
+        } else if (i === 2 || i === 3) {
+            animationType = 'spin'; // Middle 2
+        } else {
+            animationType = 'shake'; // Bottom 2
+        }
+        
+        head.className = `dancing-head dancing-head-${animationType}`;
+        head.style.backgroundImage = `url('${FACE_IMG}')`;
+        head.style.left = x + 'px';
+        head.style.top = y + 'px';
+        head.style.width = headSize + 'px';
+        head.style.height = headSize + 'px';
+        head.style.animationDelay = (i * 0.15) + 's';
+        
+        document.body.appendChild(head);
     }
 }
 
 function spawnBouncingFace(explosive = false, startX = null, startY = null) {
     const el = document.createElement('div');
-    el.className = 'spinning-face';
-    el.style.backgroundImage = `url('${FACE_IMG}')`;
+        el.className = 'spinning-face';
+        el.style.backgroundImage = `url('${FACE_IMG}')`;
     
     document.body.appendChild(el);
 
@@ -706,11 +745,10 @@ function spawnBouncingFace(explosive = false, startX = null, startY = null) {
     el.style.left = x + 'px';
     el.style.top = y + 'px';
 
-    // Varied sizes for faces
-    const scale = 0.4 + Math.random() * 0.8;
-    const baseSize = 60;
-    el.style.width = (baseSize * scale) + 'px';
-    el.style.height = (baseSize * scale) + 'px';
+    // All faces same size (biggest size)
+    const headSize = 72;
+    el.style.width = headSize + 'px';
+    el.style.height = headSize + 'px';
 
     // Random spin speed
     const spinDuration = 0.5 + Math.random() * 1.5;
@@ -771,9 +809,9 @@ function spawnBouncingHeart(explosive = false) {
     }
     
     const el = document.createElement('div');
-    el.className = 'heart-particle';
-    el.textContent = '❤️';
-    el.style.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        el.className = 'heart-particle';
+        el.textContent = '❤️';
+        el.style.color = COLORS[Math.floor(Math.random() * COLORS.length)];
 
     document.body.appendChild(el);
 

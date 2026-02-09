@@ -680,6 +680,63 @@ body {
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
 }
 
+/* Dancing Heads */
+.dancing-head {
+  position: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 8000;
+}
+
+/* Bottom 2: Shake */
+.dancing-head-shake {
+  animation: dance-shake 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes dance-shake {
+  0% {
+    transform: translate(-50%, -50%) rotate(-5deg) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(5deg) scale(1.05);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(-5deg) scale(1);
+  }
+}
+
+/* Middle 2: Spin */
+.dancing-head-spin {
+  animation: dance-spin 2s linear infinite;
+}
+
+@keyframes dance-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Top 2: Flip */
+.dancing-head-flip {
+  animation: dance-flip 1s ease-in-out infinite;
+}
+
+@keyframes dance-flip {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotateX(0deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotateX(180deg);
+  }
+}
+
 /* Globe Burst Effect */
 .burst-particle {
   position: fixed;
